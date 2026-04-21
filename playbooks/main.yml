@@ -1,0 +1,13 @@
+- name: Playbook to set up the cloud-1 environment
+  hosts: all
+  become: true
+
+  roles:
+    - setup-system
+    - nginx
+    - wordpress
+    - mariadb
+    - docker-compose
+    - fire-wall
+
+
