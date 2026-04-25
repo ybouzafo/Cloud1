@@ -1,0 +1,24 @@
+- name: Create WordPress deployment folder
+  file:
+    path: "/home/{{ ansible_user }}/cloud-1/requirements/wordpress"
+    state: directory
+
+
+- name: Copy WordPress Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/wordpress/Dockerfile"
+
+- name: Copy WordPress tools files
+  copy:
+    src: tools
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/wordpress/"
+    mode: '0644'
+
+- name: Copy WordPress config files
+  copy:
+    src: conf
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/wordpress/"
+    mode: '0644'
+
+

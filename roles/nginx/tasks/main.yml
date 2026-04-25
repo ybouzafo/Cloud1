@@ -1,0 +1,22 @@
+- name: Create Nginx deployment folder
+  file:
+    path: "/home/{{ ansible_user }}/cloud-1/requirements/nginx"
+    state: directory
+
+
+- name: Copy Nginx Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/nginx/Dockerfile"
+
+- name: Copy Nginx config files
+  copy:
+    src: conf
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/nginx/"
+    mode: '0644'
+
+- name: Copy Nginx tools files
+  copy:
+    src: tools
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/nginx/"
+    mode: '0644'

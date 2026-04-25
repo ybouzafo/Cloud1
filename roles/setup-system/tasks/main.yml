@@ -1,0 +1,39 @@
+- name: Mise a jour du cache apt
+  apt:
+    update_cache: yes
+
+- name: Installation des dependances systeme
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - python3-pip
+    state: present
+
+- name: Ajout de la cle GPG officielle de Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Ajout du depot Docker
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Installation de Docker Engine
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin  
+    state: present
+
+- name: "Ajouter l'utilisateur au groupe docker"
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes

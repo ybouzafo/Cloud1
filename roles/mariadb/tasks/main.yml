@@ -1,0 +1,22 @@
+- name: "MariaDB : Création du dossier sur la VM"
+  file:
+    path: "/home/{{ ansible_user }}/cloud-1/requirements/mariadb"
+    state: directory
+    mode: '0755'
+
+- name: "MariaDB : Copie du Dockerfile et des configs"
+  copy:
+    src: Dockerfile
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/mariadb/Dockerfile"
+
+- name: "MariaDB : Copie des dossiers  tools"
+  copy:
+    src: tools
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/mariadb/"
+    mode: '0644'
+
+- name: "MariaDB : Copie files config"
+  copy:
+    src: conf
+    dest: "/home/{{ ansible_user }}/cloud-1/requirements/mariadb/"
+    mode: '0644'

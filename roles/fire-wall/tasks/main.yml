@@ -1,0 +1,30 @@
+- name: Forcer l'activation réelle de UFW
+  become: yes
+  block:
+    - name: 1. Installer UFW
+      apt:
+        name: ufw
+        state: present
+
+- name: 2. Configurer les règles (SSH et Web)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: ['22', '80', '443']
+
+- name: 3. Définir la politique par défaut
+  community.general.ufw:
+    policy: deny
+    direction: incoming
+
+- name: 4. LE FIX Forcer l'activation via le système
+  command: ufw --force enable
+  register: ufw_output
+  changed_when: "'Firewall is active' in ufw_output.stdout"
+
+- name: 5. S'assurer que le service survit au reboot
+  systemd:
+    name: ufw
+    enabled: yes
+    state: started

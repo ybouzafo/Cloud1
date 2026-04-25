@@ -1,0 +1,40 @@
+# create volumes for mariadb and wordpress
+
+- name: Create volumes for WordPress and MariaDB
+  file:
+    path: "/home/{{ ansible_user }}/data/wordpress"
+    state: directory
+- name: Create volumes for WordPress and MariaDB
+  file:
+    path: "/home/{{ ansible_user }}/data/mariadb"
+    state: directory
+
+- name: Copy docker-compose.yml
+  copy:
+    src:  docker-compose.yml
+    dest: "/home/{{ ansible_user }}/cloud-1/docker-compose.yml"
+    mode: '0644'
+- name: Copy .env file
+  template:
+    src: env.j2
+    dest: "/home/{{ ansible_user }}/cloud-1/.env"
+    mode: '0644'
+ 
+- name: Run docker-compose
+  shell: "docker compose up -d --build"
+  become: yes
+  args:
+    chdir: "/home/{{ ansible_user }}/cloud-1"
+  register: compose_result
+  async: 1000
+  poll: 5
+
+
+- name: Show info about container deployment
+  debug:
+    msg:
+      - "Docker containers started successfully."
+      - "Try to access your site at:"
+      - "https://ybouzafo.francecentral.cloudapp.azure.com"
+      - "https://shilal.duckdns.org" 
+      - "https://ybouzafo.duckdns.org" 
